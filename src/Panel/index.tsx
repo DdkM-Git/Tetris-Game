@@ -19,13 +19,12 @@ function Panel() {
 
   const [currentMatrix, setCurrentMatrix] = useState<number[][]>(gameBoard.getMatrix());
 
-  /*useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
-      const aaa = gameBoard.moveFigure();
-      setCurrentMatrix(aaa.getMatrix());
-    }, 500);
+      setCurrentMatrix(gameBoard.moveFigure().getMatrix());
+    }, 1500);
     return () => clearInterval(interval);
-  }, []);*/
+  }, []);
 
   return (
     <>
@@ -52,14 +51,13 @@ function Panel() {
           })}
         </Box>
       </Box>
-      <Button
+      {/*<Button
         onClick={() => {
-          const aaa = gameBoard.moveFigure();
-          setCurrentMatrix(aaa.getMatrix());
+          setCurrentMatrix(gameBoard.moveFigure().getMatrix());
         }}
       >
         Next
-      </Button>
+      </Button>*/}
     </>
   );
 }

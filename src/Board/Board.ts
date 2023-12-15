@@ -17,11 +17,9 @@ class Board {
   moveFigure(): Board {
     if (this._figures.length === 0) {
       const newFigure = this.getRandomFigure([0, 3]);
-
       !!newFigure && this.addFigure(newFigure);
     } else {
       let tmpFigure = this._figures[this._figures.length - 1];
-
       tmpFigure._coordinates = tmpFigure._coordinates.map((co) => {
         return [co[0] + 1, co[1]];
       }) as FigureCoordinatesType;
@@ -69,17 +67,39 @@ class Board {
 
   private checkMove(figureToCheck: Figure): boolean {
     const lowestCoordinates = figureToCheck.getLowestCoordinates();
-    const allCoordinates = new Array<CoordinatesType>();
+    let allCoordinates = new Array<CoordinatesType>();
+    console.log("lowestCoordinates", lowestCoordinates);
 
+    console.log("asd", this._figures.length);
     for (let i = 0; i < this._figures.length - 1; i++) {
-      allCoordinates.concat(this._figures[i]._coordinates);
+      console.log("i", i);
+      console.log("this._figures[i]._coordinates", this._figures[i]._coordinates);
+      console.log("allCoordinates", allCoordinates);
+      console.log("_coordinates", this._figures[i]._coordinates);
+      allCoordinates = allCoordinates.concat(this._figures[i]._coordinates);
     }
 
-    return allCoordinates.every((co) => {
-      return lowestCoordinates.every((lco) => {
-        return co[0] !== lco[0] && co[1] !== lco[1] && lco[0] !== 15;
-      });
+    console.log("allCoordinates", allCoordinates);
+    console.log("lowestCoordinates", lowestCoordinates);
+    lowestCoordinates.forEach((lco) => {
+      console.log("asdasdasdasdasdasdasdasdasd");
+      console.log("lco[0]", lco[0]);
+      console.log("lco[1]", lco[1]);
     });
+
+
+    if (allCoordinates.length === 0) {
+      return lowestCoordinates.every((lco) => {
+        return lco[0] !== 15;
+      });
+    }
+    else {
+      return allCoordinates.every((co) => {
+        return lowestCoordinates.every((lco) => {
+          return co[0] !== lco[0] && co[1] !== lco[1] && lco[0] !== 15;
+        });
+      });
+    }
   }
 
   private getRandomFigure(startCoordinates: CoordinatesType): Figure | undefined {

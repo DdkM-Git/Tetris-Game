@@ -21,6 +21,7 @@ abstract class Figure {
 
   protected makeCoordinates(startCoordinates: CoordinatesType): FigureCoordinatesType {
     let newCoordinates = this._coordinates;
+    console.log("newCoordinates1", newCoordinates);
     let currentCoordinatesIndex: number = 0;
 
     this._matrix.forEach((mRow, mRowIndex) => {
@@ -32,25 +33,37 @@ abstract class Figure {
       });
     });
 
-    this._coordinates = newCoordinates;
-    console.log("newCoordinates", newCoordinates);
     return newCoordinates;
   }
 
   getLowestCoordinates(): FigureLowestCoordinatesType {
-    console.log("this._coordinates", this._coordinates);
     let lowestCoordinates = new Array<CoordinatesType>();
     let tmpCoordinates = Array.from(this._coordinates);
 
+    let min: number, minIndex: number, temp: CoordinatesType;
+
     for (let i = 0; i < tmpCoordinates.length - 1; i++) {
-      if (tmpCoordinates[i][1] > tmpCoordinates[i + 1][1]) {
-        let tmp = tmpCoordinates[i];
-        tmpCoordinates[i] = tmpCoordinates[i + 1];
-        tmpCoordinates[i + 1] = tmp;
+      min = tmpCoordinates[i][1];
+      minIndex = i;
+
+      for (let j = i; j < tmpCoordinates.length; j++) {
+        if (tmpCoordinates[j][1] < min) {
+          min = tmpCoordinates[j][1];
+          minIndex = j;
+        }
       }
+
+      temp = tmpCoordinates[i];
+      tmpCoordinates[i] = tmpCoordinates[minIndex];
+      tmpCoordinates[minIndex] = temp;
     }
 
-    console.log("tmpCoordinates", tmpCoordinates);
+    for (let i = 1; i < tmpCoordinates.length; i++) {
+      if (tmpCoordinates[i - 1][1] < tmpCoordinates[i][1]) {
+        lowestCoordinates.push(tmpCoordinates[i - 1]);
+      }
+    }
+    lowestCoordinates.push(tmpCoordinates[tmpCoordinates.length - 1]);
 
     return lowestCoordinates as FigureLowestCoordinatesType;
   }
