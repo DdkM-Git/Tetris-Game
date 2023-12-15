@@ -26,39 +26,31 @@ abstract class Figure {
     this._matrix.forEach((mRow, mRowIndex) => {
       mRow.forEach((mElement, mElementIndex) => {
         if (mElement == 1) {
-          newCoordinates[currentCoordinatesIndex] = [startCoordinates[0] + mRowIndex, startCoordinates[1] + mElementIndex];
+          newCoordinates[currentCoordinatesIndex] = [startCoordinates[0] - 1 + mRowIndex, startCoordinates[1] + mElementIndex];
           currentCoordinatesIndex++;
         }
       });
     });
 
     this._coordinates = newCoordinates;
+    console.log("newCoordinates", newCoordinates);
     return newCoordinates;
   }
 
   getLowestCoordinates(): FigureLowestCoordinatesType {
+    console.log("this._coordinates", this._coordinates);
     let lowestCoordinates = new Array<CoordinatesType>();
-    let tmpCoordinates = this._coordinates;
+    let tmpCoordinates = Array.from(this._coordinates);
 
-    tmpCoordinates.sort((a, b) => {
-      const numberA = a[0] * 1000 + a[1];
-      const numberB = b[0] * 1000 + b[1];
-
-      return numberA - numberB;
-    });
-
-    let currentLowestCoordinates = tmpCoordinates[tmpCoordinates.length - 1];
-
-    for (let i: number = tmpCoordinates.length; i > 0; i--) {
-      if (i == 1) {
-        lowestCoordinates.push(tmpCoordinates[i - 1]);
-      } else if (currentLowestCoordinates[0] > tmpCoordinates[i - 1][0]) {
-        lowestCoordinates.push(currentLowestCoordinates);
-        currentLowestCoordinates = tmpCoordinates[i - 1];
-      } else {
-        currentLowestCoordinates = tmpCoordinates[i - 1];
+    for (let i = 0; i < tmpCoordinates.length - 1; i++) {
+      if (tmpCoordinates[i][1] > tmpCoordinates[i + 1][1]) {
+        let tmp = tmpCoordinates[i];
+        tmpCoordinates[i] = tmpCoordinates[i + 1];
+        tmpCoordinates[i + 1] = tmp;
       }
     }
+
+    console.log("tmpCoordinates", tmpCoordinates);
 
     return lowestCoordinates as FigureLowestCoordinatesType;
   }

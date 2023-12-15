@@ -16,19 +16,16 @@ class Board {
 
   moveFigure(): Board {
     if (this._figures.length === 0) {
-      const newFigure = this.getRandomFigure([0, 4]);
-      console.log("tmpFigure", newFigure);
+      const newFigure = this.getRandomFigure([0, 3]);
 
       !!newFigure && this.addFigure(newFigure);
     } else {
       let tmpFigure = this._figures[this._figures.length - 1];
 
-      console.log("tmpFigure", tmpFigure);
       tmpFigure._coordinates = tmpFigure._coordinates.map((co) => {
         return [co[0] + 1, co[1]];
       }) as FigureCoordinatesType;
 
-      //console.log("checkMove", this.checkMove(tmpFigure));
       if (this.checkMove(tmpFigure)) {
         this._figures[this._figures.length - 1]._coordinates = tmpFigure._coordinates;
       } else {
@@ -77,10 +74,6 @@ class Board {
     for (let i = 0; i < this._figures.length - 1; i++) {
       allCoordinates.concat(this._figures[i]._coordinates);
     }
-
-    console.log("this._figures", this._figures[this._figures.length - 1]);
-    console.log("allCoordinates", allCoordinates);
-    console.log("lowestCoordinates", lowestCoordinates);
 
     return allCoordinates.every((co) => {
       return lowestCoordinates.every((lco) => {
