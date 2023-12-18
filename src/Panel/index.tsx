@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import Board from "../Board/Board";
 import SquareFigure from "../figures/SquareFigure";
@@ -19,20 +19,20 @@ function Panel() {
   const [currentMatrix, setCurrentMatrix] = useState<number[][]>(gameBoard.getMatrix());
 
   function makeMove(e: KeyboardEvent) {
-    if (e.key === "ArrowLeft") setCurrentMatrix(gameBoard.moveLeftFigure(gameBoard._figures).getMatrix());
-    else if (e.key === "ArrowRight") setCurrentMatrix(gameBoard.moveRightFigure(gameBoard._figures).getMatrix());
-    else if (e.key === "ArrowDown") setCurrentMatrix(gameBoard.moveDownFigure(gameBoard._figures).getMatrix());
+    if (e.key === "ArrowLeft") setCurrentMatrix(gameBoard.moveLeftFigure().getMatrix());
+    else if (e.key === "ArrowRight") setCurrentMatrix(gameBoard.moveRightFigure().getMatrix());
+    else if (e.key === "ArrowDown") setCurrentMatrix(gameBoard.moveDownFigure().getMatrix());
   }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMatrix(gameBoard.moveDownFigure(gameBoard._figures).getMatrix());
+      setCurrentMatrix(gameBoard.moveDownFigure().getMatrix());
     }, 1500);
-
     window.addEventListener("keydown", makeMove);
 
     return () => {
       clearInterval(interval);
+      window.removeEventListener("keydown", makeMove);
     };
   }, []);
 
@@ -61,6 +61,7 @@ function Panel() {
           })}
         </Box>
       </Box>
+      {gameBoard._isGameOver && <Typography sx={{ color: "#F00", background: "#000" }}>Game over</Typography>}
     </>
   );
 }

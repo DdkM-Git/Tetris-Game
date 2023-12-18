@@ -35,6 +35,27 @@ abstract class Figure extends Object {
     return newCoordinates;
   }
 
+  moveDown(): Figure {
+    this._coordinates = this._coordinates.map((co: CoordinatesType) => {
+      return [co[0] + 1, co[1]];
+    }) as FigureCoordinatesType;
+    return this;
+  }
+
+  moveLeft(): Figure {
+    this._coordinates = this._coordinates.map((co: CoordinatesType) => {
+      return [co[0], co[1] - 1];
+    }) as FigureCoordinatesType;
+    return this;
+  }
+
+  moveRight(): Figure {
+    this._coordinates = this._coordinates.map((co: CoordinatesType) => {
+      return [co[0], co[1] + 1];
+    }) as FigureCoordinatesType;
+    return this;
+  }
+
   getLowestCoordinates(): FigureLowestCoordinatesType {
     let lowestCoordinates = new Array<CoordinatesType>();
     let tmpCoordinates = Array.from(this._coordinates);

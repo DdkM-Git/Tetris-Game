@@ -1,6 +1,5 @@
 import CoordinatesType from "../figures/CoordinatesType";
 import Figure from "../figures/Figure";
-import FigureCoordinatesType from "../figures/FigureCoordinatesType";
 import LeftPipeFigure from "../figures/LeftPipeFigure";
 import RectangleFigure from "../figures/RectangleFigure";
 import RightPipeFigure from "../figures/RightPipeFigure";
@@ -11,66 +10,59 @@ class Board {
   _rows = 16;
   _columns = 10;
   _figures = new Array<Figure>();
-  _error = false;
+  _isError = false;
+  _isGameOver = false;
 
-  moveDownFigure(allFigures: Figure[]): Board {
+  moveDownFigure(): Board {
+    const allFigures = this._figures;
     if (allFigures.length === 0) {
       const newFigure = this.getRandomFigure([0, 3]);
-      !!newFigure && this.addFigure(newFigure, allFigures);
+      !!newFigure && this.addFigure(newFigure);
     } else {
-      let tmpFigure = allFigures[allFigures.length - 1].createClone();
-      tmpFigure._coordinates = tmpFigure._coordinates.map((co: CoordinatesType) => {
-        return [co[0] + 1, co[1]];
-      }) as FigureCoordinatesType;
-      if (this.checkVerticalMove(tmpFigure, allFigures)) {
-        allFigures[allFigures.length - 1]._coordinates = tmpFigure._coordinates;
+      const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
+
+      if (this.checkVerticalMove(tmpFigure)) {
+        allFigures[allFigures.length - 1].moveDown();
       } else {
-        const newFigure = this.getRandomFigure([0, 4]);
+        const newFigure = this.getRandomFigure([0, 3]);
         if (newFigure) {
-          this.addFigure(newFigure, allFigures);
-        } else this.setError();
+          this.addFigure(newFigure);
+        } else this.setGameOver();
       }
     }
     return this;
   }
 
-  moveLeftFigure(allFigures: Figure[]): Board {
-    let tmpFigure = allFigures[allFigures.length - 1].createClone();
-    tmpFigure._coordinates = tmpFigure._coordinates.map((co: CoordinatesType) => {
-      return [co[0], co[1] - 1];
-    }) as FigureCoordinatesType;
-
-    if (this.checkHorizontalMove(tmpFigure, allFigures)) {
-      allFigures[allFigures.length - 1]._coordinates = tmpFigure._coordinates;
+  moveLeftFigure(): Board {
+    const allFigures = this._figures;
+    const tmpFigure = allFigures[allFigures.length - 1].createClone().moveLeft();
+    if (this.checkHorizontalMove(tmpFigure)) {
+      allFigures[allFigures.length - 1].moveLeft();
     }
-
     return this;
   }
 
-  moveRightFigure(allFigures: Figure[]): Board {
-    let tmpFigure = allFigures[allFigures.length - 1].createClone();
-    tmpFigure._coordinates = tmpFigure._coordinates.map((co: CoordinatesType) => {
-      return [co[0], co[1] + 1];
-    }) as FigureCoordinatesType;
-
-    if (this.checkHorizontalMove(tmpFigure, allFigures)) {
-      allFigures[allFigures.length - 1]._coordinates = tmpFigure._coordinates;
+  moveRightFigure(): Board {
+    const allFigures = this._figures;
+    const tmpFigure = allFigures[allFigures.length - 1].createClone().moveRight();
+    if (this.checkHorizontalMove(tmpFigure)) {
+      allFigures[allFigures.length - 1].moveRight();
     }
-
     return this;
   }
 
-  private addFigure(newFigure: Figure, allFigures: Figure[]): Board {
-    if (this.checkVerticalMove(newFigure, allFigures)) {
+  private addFigure(newFigure: Figure): Board {
+    if (this.checkVerticalMove(newFigure)) {
       this._figures.push(newFigure);
     } else {
-      this.setError();
+      this.setGameOver();
     }
     return this;
   }
 
-  private checkVerticalMove(figureToCheck: Figure, allFigures: Figure[]): boolean {
+  private checkVerticalMove(figureToCheck: Figure): boolean {
     const lowestCoordinates = figureToCheck.getLowestCoordinates();
+    const allFigures = this._figures;
     let allCoordinates = new Array<CoordinatesType>();
 
     for (let i = 0; i < allFigures.length - 1; i++) {
@@ -84,8 +76,9 @@ class Board {
     }
   }
 
-  private checkHorizontalMove(figureToCheck: Figure, allFigures: Figure[]): boolean {
+  private checkHorizontalMove(figureToCheck: Figure): boolean {
     const lowestCoordinates = figureToCheck.getLowestCoordinates();
+    const allFigures = this._figures;
     let allCoordinates = new Array<CoordinatesType>();
 
     for (let i = 0; i < allFigures.length - 1; i++) {
@@ -137,7 +130,11 @@ class Board {
   }
 
   private setError() {
-    this._error = true;
+    this._isError = true;
+  }
+
+  private setGameOver() {
+    this._isGameOver = true;
   }
 }
 
