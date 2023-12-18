@@ -15,15 +15,25 @@ interface GameInterface {
 type FigureType = "LeftPipeFigure" | "RectangleFigure" | "RightPipeFigure" | "SquareFigure";
 
 function Panel() {
-  const gameBoard = new Board();
-
+  const gameBoard = useMemo(() => new Board(), []);
   const [currentMatrix, setCurrentMatrix] = useState<number[][]>(gameBoard.getMatrix());
+
+  function makeMove(e: KeyboardEvent) {
+    if (e.key === "ArrowLeft") setCurrentMatrix(gameBoard.moveLeftFigure(gameBoard._figures).getMatrix());
+    else if (e.key === "ArrowRight") setCurrentMatrix(gameBoard.moveRightFigure(gameBoard._figures).getMatrix());
+    else if (e.key === "ArrowDown") setCurrentMatrix(gameBoard.moveDownFigure(gameBoard._figures).getMatrix());
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentMatrix(gameBoard.moveFigure().getMatrix());
+      setCurrentMatrix(gameBoard.moveDownFigure(gameBoard._figures).getMatrix());
     }, 1500);
-    return () => clearInterval(interval);
+
+    window.addEventListener("keydown", makeMove);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -51,13 +61,6 @@ function Panel() {
           })}
         </Box>
       </Box>
-      {/*<Button
-        onClick={() => {
-          setCurrentMatrix(gameBoard.moveFigure().getMatrix());
-        }}
-      >
-        Next
-      </Button>*/}
     </>
   );
 }

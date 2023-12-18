@@ -10,6 +10,10 @@ class RightPipeFigure extends Figure {
     ];
     this.makeCoordinates(startCoordinates);
   }
+  createClone(): Figure {
+    const matrix = this.getLowestCoordinates();
+    return new RightPipeFigure(matrix[0]);
+  }
 }
 
 export default RightPipeFigure;

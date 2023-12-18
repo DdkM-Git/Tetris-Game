@@ -10,6 +10,10 @@ class RectangleFigure extends Figure {
     ];
     this.makeCoordinates(startCoordinates);
   }
+  createClone(): Figure {
+    const matrix = this.getLowestCoordinates();
+    return new RectangleFigure(matrix[0]);
+  }
 }
 
 export default RectangleFigure;

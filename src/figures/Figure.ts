@@ -3,7 +3,7 @@ import FigureCoordinatesType from "./FigureCoordinatesType";
 import FigureLowestCoordinatesType from "./FigureLowestCoordinatesType";
 import FigureMatrixType from "./FigureMatrixType";
 
-abstract class Figure {
+abstract class Figure extends Object {
   _rows = 2;
   _columns = 4;
 
@@ -21,7 +21,6 @@ abstract class Figure {
 
   protected makeCoordinates(startCoordinates: CoordinatesType): FigureCoordinatesType {
     let newCoordinates = this._coordinates;
-    console.log("newCoordinates1", newCoordinates);
     let currentCoordinatesIndex: number = 0;
 
     this._matrix.forEach((mRow, mRowIndex) => {
@@ -63,10 +62,13 @@ abstract class Figure {
         lowestCoordinates.push(tmpCoordinates[i - 1]);
       }
     }
+
     lowestCoordinates.push(tmpCoordinates[tmpCoordinates.length - 1]);
 
     return lowestCoordinates as FigureLowestCoordinatesType;
   }
+
+  abstract createClone(): Figure;
 }
 
 export default Figure;
