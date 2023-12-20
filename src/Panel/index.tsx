@@ -8,9 +8,15 @@ function Panel() {
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | undefined>(undefined);
 
   function makeMove(e: KeyboardEvent) {
-    if (e.key === "ArrowLeft") setCurrentMatrix(gameBoard.moveLeftFigure().getMatrix());
-    else if (e.key === "ArrowRight") setCurrentMatrix(gameBoard.moveRightFigure().getMatrix());
-    else if (e.key === "ArrowDown") setCurrentMatrix(gameBoard.moveDownFigure().getMatrix());
+    let tmpMatrix = gameBoard.getMatrix();
+
+    if (e.key === "ArrowLeft") tmpMatrix = gameBoard.moveLeftFigure().getMatrix();
+    else if (e.key === "ArrowRight") tmpMatrix = gameBoard.moveRightFigure().getMatrix();
+    else if (e.key === "ArrowDown") tmpMatrix = gameBoard.moveDownFigure().getMatrix();
+    else if (e.key === "a") tmpMatrix = gameBoard.rotateLeftFigure().getMatrix();
+    else if (e.key === "d") tmpMatrix = gameBoard.rotateRightFigure().getMatrix();
+
+    setCurrentMatrix(tmpMatrix);
   }
 
   function getStarted(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {

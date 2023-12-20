@@ -1,4 +1,9 @@
-type FigureMatrixRowType = [a: number, b: number, c: number, d: number];
-type FigureMatrixType = [FigureMatrixRowType, FigureMatrixRowType];
+type FigureMatrixRowType2 = [a: number, b: number];
+type FigureMatrixRowType3 = [a: number, b: number, c: number];
+type FigureMatrixRowType4 = [a: number, b: number, c: number, d: number];
+type FigureMatrixType =
+  | [FigureMatrixRowType2, FigureMatrixRowType2]
+  | [FigureMatrixRowType4, FigureMatrixRowType4, FigureMatrixRowType4, FigureMatrixRowType4]
+  | [FigureMatrixRowType3, FigureMatrixRowType3, FigureMatrixRowType3];
 
 export default FigureMatrixType;

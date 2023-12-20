@@ -10,6 +10,8 @@ abstract class Figure extends Object {
   _matrix: FigureMatrixType = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
   ];
 
   _coordinates: FigureCoordinatesType = [
@@ -20,19 +22,18 @@ abstract class Figure extends Object {
   ];
 
   protected makeCoordinates(startCoordinates: CoordinatesType): FigureCoordinatesType {
-    let newCoordinates = this._coordinates;
     let currentCoordinatesIndex: number = 0;
 
     this._matrix.forEach((mRow, mRowIndex) => {
       mRow.forEach((mElement, mElementIndex) => {
         if (mElement == 1) {
-          newCoordinates[currentCoordinatesIndex] = [startCoordinates[0] - 1 + mRowIndex, startCoordinates[1] + mElementIndex];
+          this._coordinates[currentCoordinatesIndex] = [startCoordinates[0] - 1 + mRowIndex, startCoordinates[1] + mElementIndex];
           currentCoordinatesIndex++;
         }
       });
     });
 
-    return newCoordinates;
+    return this._coordinates;
   }
 
   moveDown(): Figure {
@@ -53,6 +54,40 @@ abstract class Figure extends Object {
     this._coordinates = this._coordinates.map((co: CoordinatesType) => {
       return [co[0], co[1] + 1];
     }) as FigureCoordinatesType;
+    return this;
+  }
+
+  rotateLeft(): Figure {
+    const newMatrix: number[][] = [];
+
+    for (let col = this._matrix[0].length - 1; col >= 0; col--) {
+      const newRow = [];
+      for (let row = 0; row < this._matrix.length; row++) {
+        newRow.push(this._matrix[row][col]);
+      }
+      newMatrix.push(newRow);
+    }
+
+    this._matrix = newMatrix as FigureMatrixType;
+    this.makeCoordinates(this.getLowestCoordinates()[0]);
+
+    return this;
+  }
+
+  rotateRight(): Figure {
+    const newMatrix: number[][] = [];
+
+    for (let col = 0; col < this._matrix[0].length; col++) {
+      const newRow = [];
+      for (let row = this._matrix.length - 1; row >= 0; row--) {
+        newRow.push(this._matrix[row][col]);
+      }
+      newMatrix.push(newRow);
+    }
+
+    this._matrix = newMatrix as FigureMatrixType;
+    this.makeCoordinates(this.getLowestCoordinates()[0]);
+
     return this;
   }
 

@@ -52,6 +52,24 @@ class Board {
     return this;
   }
 
+  rotateLeftFigure(): Board {
+    const allFigures = this._figures;
+    const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateLeft();
+    if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
+      allFigures[allFigures.length - 1].rotateLeft();
+    }
+    return this;
+  }
+
+  rotateRightFigure(): Board {
+    const allFigures = this._figures;
+    const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateRight();
+    if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
+      allFigures[allFigures.length - 1].rotateRight();
+    }
+    return this;
+  }
+
   private addFigure(newFigure: Figure): Board {
     if (this.checkVerticalMove(newFigure)) {
       this._figures.push(newFigure);
