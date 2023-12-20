@@ -12,6 +12,7 @@ class Board {
   _figures = new Array<Figure>();
   _isError = false;
   _isGameOver = false;
+  _score = 0;
 
   moveDownFigure(): Board {
     const allFigures = this._figures;
