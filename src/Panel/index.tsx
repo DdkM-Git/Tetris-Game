@@ -98,6 +98,9 @@ function Panel() {
         <Button variant="contained" disabled={!!intervalId} onClick={getStarted}>
           Rozpocznij
         </Button>
+        <Button variant="contained" disabled={!intervalId} onClick={getFinished}>
+          stop
+        </Button>
         {gameBoard._isGameOver && <Typography sx={{ color: "#F00", background: "#000" }}>Game over</Typography>}
       </Box>
     </>

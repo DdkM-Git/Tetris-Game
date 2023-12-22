@@ -27,13 +27,26 @@ abstract class Figure extends Object {
     this._matrix.forEach((mRow, mRowIndex) => {
       mRow.forEach((mElement, mElementIndex) => {
         if (mElement == 1) {
-          this._coordinates[currentCoordinatesIndex] = [startCoordinates[0] - 1 + mRowIndex, startCoordinates[1] + mElementIndex];
+          this._coordinates[currentCoordinatesIndex] = [startCoordinates[0] + mRowIndex, startCoordinates[1] + mElementIndex];
           currentCoordinatesIndex++;
         }
       });
     });
 
     return this._coordinates;
+  }
+
+  protected getStartCoordinates(): CoordinatesType {
+    let columnIndex = -1;
+    const rowIndex = this._matrix.findIndex((row) => {
+      let tmpColumnIndex = row.findIndex((col) => col === 1);
+      if (tmpColumnIndex !== -1) {
+        columnIndex = tmpColumnIndex;
+      }
+      return tmpColumnIndex !== -1;
+    });
+
+    return [this._coordinates[0][0] - rowIndex, this._coordinates[0][1] - columnIndex];
   }
 
   moveDown(): Figure {
@@ -59,7 +72,6 @@ abstract class Figure extends Object {
 
   rotateLeft(): Figure {
     const newMatrix: number[][] = [];
-
     for (let col = this._matrix[0].length - 1; col >= 0; col--) {
       const newRow = [];
       for (let row = 0; row < this._matrix.length; row++) {
@@ -69,7 +81,7 @@ abstract class Figure extends Object {
     }
 
     this._matrix = newMatrix as FigureMatrixType;
-    this.makeCoordinates(this.getLowestCoordinates()[0]);
+    this.makeCoordinates(this.getStartCoordinates());
 
     return this;
   }
@@ -86,7 +98,7 @@ abstract class Figure extends Object {
     }
 
     this._matrix = newMatrix as FigureMatrixType;
-    this.makeCoordinates(this.getLowestCoordinates()[0]);
+    this.makeCoordinates(this.getStartCoordinates());
 
     return this;
   }

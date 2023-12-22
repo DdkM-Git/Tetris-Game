@@ -37,6 +37,7 @@ class Board {
   moveLeftFigure(): Board {
     const allFigures = this._figures;
     const tmpFigure = allFigures[allFigures.length - 1].createClone().moveLeft();
+
     if (this.checkHorizontalMove(tmpFigure)) {
       allFigures[allFigures.length - 1].moveLeft();
     }
@@ -46,6 +47,7 @@ class Board {
   moveRightFigure(): Board {
     const allFigures = this._figures;
     const tmpFigure = allFigures[allFigures.length - 1].createClone().moveRight();
+
     if (this.checkHorizontalMove(tmpFigure)) {
       allFigures[allFigures.length - 1].moveRight();
     }
@@ -55,18 +57,22 @@ class Board {
   rotateLeftFigure(): Board {
     const allFigures = this._figures;
     const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateLeft();
+
     if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1].rotateLeft();
+      allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateLeft();
     }
+
     return this;
   }
 
   rotateRightFigure(): Board {
     const allFigures = this._figures;
     const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateRight();
+
     if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1].rotateRight();
+      allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateRight();
     }
+
     return this;
   }
 
@@ -89,14 +95,14 @@ class Board {
     }
 
     if (allCoordinates.length === 0) {
-      return lowestCoordinates.every((lco) => lco[0] !== this._rows);
+      return lowestCoordinates.every((lco) => lco[0] < this._rows);
     } else {
-      return allCoordinates.every((co) => lowestCoordinates.every((lco) => !(co[0] === lco[0] && co[1] === lco[1]) && lco[0] !== this._rows));
+      return allCoordinates.every((co) => lowestCoordinates.every((lco) => !(co[0] === lco[0] && co[1] === lco[1]) && lco[0] < this._rows));
     }
   }
 
   private checkHorizontalMove(figureToCheck: Figure): boolean {
-    const lowestCoordinates = figureToCheck.getLowestCoordinates();
+    const lowestCoordinates = figureToCheck._coordinates;
     const allFigures = this._figures;
     let allCoordinates = new Array<CoordinatesType>();
 
@@ -105,11 +111,9 @@ class Board {
     }
 
     if (allCoordinates.length === 0) {
-      return lowestCoordinates.every((lco) => lco[1] !== -1 && lco[1] !== this._columns);
+      return lowestCoordinates.every((lco) => lco[1] !== -1 && lco[1] < this._columns);
     } else {
-      return allCoordinates.every((co) =>
-        lowestCoordinates.every((lco) => !(co[0] === lco[0] && co[1] === lco[1]) && lco[1] !== -1 && lco[1] !== this._columns)
-      );
+      return allCoordinates.every((co) => lowestCoordinates.every((lco) => !(co[0] === lco[0] && co[1] === lco[1]) && lco[1] !== -1 && lco[1] < this._columns));
     }
   }
 

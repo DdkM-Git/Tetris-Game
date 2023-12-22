@@ -1,19 +1,22 @@
 import CoordinatesType from "./CoordinatesType";
 import Figure from "./Figure";
+import FigureMatrixType from "./FigureMatrixType";
 
 class LeftPipeFigure extends Figure {
-  constructor(startCoordinates: CoordinatesType) {
+  constructor(startCoordinates: CoordinatesType, matrix?: FigureMatrixType) {
     super();
-    this._matrix = [
-      [1, 0, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ];
+    if (matrix) {
+      this._matrix = matrix;
+    } else {
+      this._matrix = [
+        [1, 0, 0],
+        [1, 1, 1],
+      ];
+    }
     this.makeCoordinates(startCoordinates);
   }
   createClone(): Figure {
-    const matrix = this.getLowestCoordinates();
-    return new LeftPipeFigure([matrix[0][0], matrix[0][1] - 1]);
+    return new LeftPipeFigure(this.getStartCoordinates(), this._matrix);
   }
 }
 
