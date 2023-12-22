@@ -16,6 +16,7 @@ class Board {
 
   moveDownFigure(): Board {
     const allFigures = this._figures;
+    this.checkScoringAPoint();
     if (allFigures.length === 0) {
       const newFigure = this.getRandomFigure([0, 3]);
       !!newFigure && this.addFigure(newFigure);
@@ -88,8 +89,8 @@ class Board {
   private checkVerticalMove(figureToCheck: Figure): boolean {
     const lowestCoordinates = figureToCheck.getLowestCoordinates();
     const allFigures = this._figures;
-    let allCoordinates = new Array<CoordinatesType>();
 
+    let allCoordinates = new Array<CoordinatesType>();
     for (let i = 0; i < allFigures.length - 1; i++) {
       allCoordinates = allCoordinates.concat(allFigures[i]._coordinates);
     }
@@ -104,8 +105,8 @@ class Board {
   private checkHorizontalMove(figureToCheck: Figure): boolean {
     const lowestCoordinates = figureToCheck._coordinates;
     const allFigures = this._figures;
-    let allCoordinates = new Array<CoordinatesType>();
 
+    let allCoordinates = new Array<CoordinatesType>();
     for (let i = 0; i < allFigures.length - 1; i++) {
       allCoordinates = allCoordinates.concat(allFigures[i]._coordinates);
     }
@@ -114,6 +115,30 @@ class Board {
       return lowestCoordinates.every((lco) => lco[1] !== -1 && lco[1] < this._columns);
     } else {
       return allCoordinates.every((co) => lowestCoordinates.every((lco) => !(co[0] === lco[0] && co[1] === lco[1]) && lco[1] !== -1 && lco[1] < this._columns));
+    }
+  }
+
+  private checkScoringAPoint() {
+    const allFigures = this._figures;
+
+    let allCoordinates = new Array<CoordinatesType>();
+    for (let i = 0; i < allFigures.length - 1; i++) {
+      allCoordinates = allCoordinates.concat(allFigures[i]._coordinates);
+    }
+
+    const tmpcoor: Array<CoordinatesType> = [];
+
+    for (let i = 0; i < this._rows; i++) {
+      for (let j = 0; j < this._columns; j++) {
+        const fcoor = allCoordinates.find((coor) => coor[0] === i && coor[1] === j);
+        if (fcoor) {
+          tmpcoor.push(fcoor);
+        }
+      }
+    }
+
+    if (tmpcoor.length > 0) {
+      console.log("tmpcoor", tmpcoor);
     }
   }
 
