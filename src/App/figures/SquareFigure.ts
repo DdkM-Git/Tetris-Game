@@ -1,23 +1,24 @@
-import CoordinatesType from "./CoordinatesType";
+import CoordinatesType from "../../types/CoordinatesType";
 import Figure from "./Figure";
-import FigureMatrixType from "./FigureMatrixType";
+import FigureMatrixType from "../../types/FigureMatrixType";
 
-class LeftPointedFigure extends Figure {
+class SquareFigure extends Figure {
   constructor(startCoordinates: CoordinatesType, matrix?: FigureMatrixType) {
     super();
     if (matrix) {
       this._matrix = matrix;
     } else {
       this._matrix = [
-        [0, 1, 0],
-        [1, 1, 1],
+        [1, 1],
+        [1, 1],
       ];
     }
     this.makeCoordinates(startCoordinates);
   }
+
   createClone(): Figure {
-    return new LeftPointedFigure(this.getStartCoordinates(), this._matrix);
+    return new SquareFigure(this.getStartCoordinates(), this._matrix);
   }
 }
 
-export default LeftPointedFigure;
+export default SquareFigure;

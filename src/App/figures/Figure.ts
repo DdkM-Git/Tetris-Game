@@ -1,6 +1,6 @@
-import CoordinatesType from "./CoordinatesType";
-import FigureCoordinatesType from "./FigureCoordinatesType";
-import FigureMatrixType from "./FigureMatrixType";
+import CoordinatesType from "../../types/CoordinatesType";
+import FigureCoordinatesType from "../../types/FigureCoordinatesType";
+import FigureMatrixType from "../../types/FigureMatrixType";
 
 abstract class Figure extends Object {
   _rows = 2;

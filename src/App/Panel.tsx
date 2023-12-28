@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import Board from "../Board/Board";
+import Board from "./Board";
 
 function Panel() {
   const gameBoard = useMemo(() => new Board(), []);

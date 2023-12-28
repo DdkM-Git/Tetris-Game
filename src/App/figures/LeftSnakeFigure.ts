@@ -1,6 +1,6 @@
-import CoordinatesType from "./CoordinatesType";
+import CoordinatesType from "../../types/CoordinatesType";
 import Figure from "./Figure";
-import FigureMatrixType from "./FigureMatrixType";
+import FigureMatrixType from "../../types/FigureMatrixType";
 
 class LeftSnakeFigure extends Figure {
   constructor(startCoordinates: CoordinatesType, matrix?: FigureMatrixType) {

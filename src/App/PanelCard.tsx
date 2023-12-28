@@ -1,6 +1,4 @@
 import { Button, Paper } from '@mui/material';
-import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
-import './style.css';
 import { useState } from 'react';
 
 function PanelCard() {

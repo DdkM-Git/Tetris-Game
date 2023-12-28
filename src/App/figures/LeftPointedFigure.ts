@@ -1,8 +1,8 @@
-import CoordinatesType from "./CoordinatesType";
+import CoordinatesType from "../../types/CoordinatesType";
 import Figure from "./Figure";
-import FigureMatrixType from "./FigureMatrixType";
+import FigureMatrixType from "../../types/FigureMatrixType";
 
-class RightPointedFigure extends Figure {
+class LeftPointedFigure extends Figure {
   constructor(startCoordinates: CoordinatesType, matrix?: FigureMatrixType) {
     super();
     if (matrix) {
@@ -16,8 +16,8 @@ class RightPointedFigure extends Figure {
     this.makeCoordinates(startCoordinates);
   }
   createClone(): Figure {
-    return new RightPointedFigure(this.getStartCoordinates(), this._matrix);
+    return new LeftPointedFigure(this.getStartCoordinates(), this._matrix);
   }
 }
 
-export default RightPointedFigure;
+export default LeftPointedFigure;

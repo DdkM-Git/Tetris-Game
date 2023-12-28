@@ -1,5 +1,4 @@
 import { Box, Paper } from "@mui/material";
-import "./App.css";
 import Panel from "./Panel";
 
 function App() {

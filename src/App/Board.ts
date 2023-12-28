@@ -1,29 +1,27 @@
-import CoordinatesType from "../figures/CoordinatesType";
-import Figure from "../figures/Figure";
-import FigureCoordinatesType from "../figures/FigureCoordinatesType";
-import LeftPipeFigure from "../figures/LeftPipeFigure";
-import LeftPointedFigure from "../figures/LeftPointedFigure";
-import LeftSnakeFigure from "../figures/LeftSnakeFigure";
-import RectangleFigure from "../figures/RectangleFigure";
-import RightPipeFigure from "../figures/RightPipeFigure";
-import RightPointedFigure from "../figures/RightPointedFigure";
-import RightSnakeFigure from "../figures/RightSnakeFigure";
-import SquareFigure from "../figures/SquareFigure";
+import CoordinatesType from "../types/CoordinatesType";
+import Figure from "./figures/Figure";
+import FigureCoordinatesType from "../types/FigureCoordinatesType";
+import LeftPipeFigure from "./figures/LeftPipeFigure";
+import LeftPointedFigure from "./figures/LeftPointedFigure";
+import LeftSnakeFigure from "./figures/LeftSnakeFigure";
+import RectangleFigure from "./figures/RectangleFigure";
+import RightPipeFigure from "./figures/RightPipeFigure";
+import RightPointedFigure from "./figures/RightPointedFigure";
+import RightSnakeFigure from "./figures/RightSnakeFigure";
+import SquareFigure from "./figures/SquareFigure";
 import getRandomInt from "../utils/getRandomInt";
 
 class Board {
   _rows = 16;
   _columns = 10;
   _figures = new Array<Figure>();
-  _isError = false;
   _isGameOver = false;
   _score = 0;
 
   moveDownFigure(): Board {
     const allFigures = this._figures;
     if (allFigures.length === 0) {
-      const newFigure = this.getRandomFigure([0, 3]);
-      !!newFigure && this.addFigure(newFigure);
+      this.addFigure(this.getRandomFigure([0, 3]));
     } else {
       if (allFigures[allFigures.length - 1]._coordinates.length > 0) {
         const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
@@ -34,17 +32,11 @@ class Board {
           if (scoreRows.length > 0) {
             this.makeAPoint(scoreRows);
           } else {
-            const newFigure = this.getRandomFigure([0, 3]);
-            if (newFigure) {
-              this.addFigure(newFigure);
-            } else this.setGameOver();
+            this.addFigure(this.getRandomFigure([0, 3]));
           }
         }
       } else {
-        const newFigure = this.getRandomFigure([0, 3]);
-        if (newFigure) {
-          this.addFigure(newFigure);
-        } else this.setGameOver();
+        this.addFigure(this.getRandomFigure([0, 3]));
       }
     }
     return this;
@@ -67,6 +59,7 @@ class Board {
     if (this.checkHorizontalMove(tmpFigure)) {
       allFigures[allFigures.length - 1].moveRight();
     }
+
     return this;
   }
 
@@ -176,7 +169,7 @@ class Board {
     return this;
   }
 
-  private getRandomFigure(startCoordinates: CoordinatesType): Figure | undefined {
+  private getRandomFigure(startCoordinates: CoordinatesType): Figure {
     switch (getRandomInt(8)) {
       case 0:
         return new SquareFigure(startCoordinates);
@@ -195,7 +188,7 @@ class Board {
       case 7:
         return new RightPointedFigure(startCoordinates);
       default:
-        return undefined;
+        return this.getRandomFigure(startCoordinates);
     }
   }
 
@@ -217,10 +210,6 @@ class Board {
     }
 
     return tmpMatrix;
-  }
-
-  private setError() {
-    this._isError = true;
   }
 
   private setGameOver() {
