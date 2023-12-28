@@ -5,9 +5,11 @@ function App() {
   return (
     <Box
       sx={{
-        background: "#5f5",
+        background: "#B0E0E6",
         width: "100vw",
         height: "100vh",
+        minWidth: "1000px",
+        minHeight: "632px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

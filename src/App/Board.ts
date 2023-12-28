@@ -21,7 +21,7 @@ class Board {
   moveDownFigure(): Board {
     const allFigures = this._figures;
     if (allFigures.length === 0) {
-      this.addFigure(this.getRandomFigure([0, 3]));
+      this.addFigure(this.getRandomFigure([-1, 3]));
     } else {
       if (allFigures[allFigures.length - 1]._coordinates.length > 0) {
         const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
@@ -32,11 +32,11 @@ class Board {
           if (scoreRows.length > 0) {
             this.makeAPoint(scoreRows);
           } else {
-            this.addFigure(this.getRandomFigure([0, 3]));
+            this.addFigure(this.getRandomFigure([-1, 3]));
           }
         }
       } else {
-        this.addFigure(this.getRandomFigure([0, 3]));
+        this.addFigure(this.getRandomFigure([-1, 3]));
       }
     }
     return this;
@@ -44,44 +44,48 @@ class Board {
 
   moveLeftFigure(): Board {
     const allFigures = this._figures;
-    const tmpFigure = allFigures[allFigures.length - 1].createClone().moveLeft();
-
-    if (this.checkHorizontalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1].moveLeft();
+    if (allFigures.length !== 0) {
+      const tmpFigure = allFigures[allFigures.length - 1].createClone().moveLeft();
+      if (this.checkHorizontalMove(tmpFigure)) {
+        allFigures[allFigures.length - 1].moveLeft();
+      }
     }
     return this;
   }
 
   moveRightFigure(): Board {
     const allFigures = this._figures;
-    const tmpFigure = allFigures[allFigures.length - 1].createClone().moveRight();
+    if (allFigures.length !== 0) {
+      const tmpFigure = allFigures[allFigures.length - 1].createClone().moveRight();
 
-    if (this.checkHorizontalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1].moveRight();
+      if (this.checkHorizontalMove(tmpFigure)) {
+        allFigures[allFigures.length - 1].moveRight();
+      }
     }
-
     return this;
   }
 
   rotateLeftFigure(): Board {
     const allFigures = this._figures;
-    const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateLeft();
+    if (allFigures.length !== 0) {
+      const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateLeft();
 
-    if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateLeft();
+      if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
+        allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateLeft();
+      }
     }
-
     return this;
   }
 
   rotateRightFigure(): Board {
     const allFigures = this._figures;
-    const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateRight();
+    if (allFigures.length !== 0) {
+      const tmpFigure = allFigures[allFigures.length - 1].createClone().rotateRight();
 
-    if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
-      allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateRight();
+      if (this.checkHorizontalMove(tmpFigure) && this.checkVerticalMove(tmpFigure)) {
+        allFigures[allFigures.length - 1] = allFigures[allFigures.length - 1].createClone().rotateRight();
+      }
     }
-
     return this;
   }
 
@@ -214,6 +218,14 @@ class Board {
 
   private setGameOver() {
     this._isGameOver = true;
+  }
+
+  reset() {
+    this._rows = 16;
+    this._columns = 10;
+    this._figures = new Array<Figure>();
+    this._isGameOver = false;
+    this._score = 0;
   }
 }
 
