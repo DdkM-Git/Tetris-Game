@@ -1,5 +1,6 @@
 import CoordinatesType from "../figures/CoordinatesType";
 import Figure from "../figures/Figure";
+import FigureCoordinatesType from "../figures/FigureCoordinatesType";
 import LeftPipeFigure from "../figures/LeftPipeFigure";
 import RectangleFigure from "../figures/RectangleFigure";
 import RightPipeFigure from "../figures/RightPipeFigure";
@@ -119,27 +120,39 @@ class Board {
   }
 
   private checkScoringAPoint() {
-    const allFigures = this._figures;
+    const allFigures = Array.from(this._figures);
+    let rowsToRemove: number[] = [];
 
-    let allCoordinates = new Array<CoordinatesType>();
+    let allRows: any[] = [];
     for (let i = 0; i < allFigures.length - 1; i++) {
-      allCoordinates = allCoordinates.concat(allFigures[i]._coordinates);
+      allFigures[i]._coordinates.forEach((coor) => {
+        allRows = allRows.concat(coor[0]);
+      });
     }
 
-    const tmpcoor: Array<CoordinatesType> = [];
-
+    allRows.sort();
     for (let i = 0; i < this._rows; i++) {
-      for (let j = 0; j < this._columns; j++) {
-        const fcoor = allCoordinates.find((coor) => coor[0] === i && coor[1] === j);
-        if (fcoor) {
-          tmpcoor.push(fcoor);
-        }
+      const aaa = allRows.filter((bbb) => bbb === i);
+      if (aaa.length === this._columns) {
+        rowsToRemove.push(i);
       }
     }
 
-    if (tmpcoor.length > 0) {
-      console.log("tmpcoor", tmpcoor);
+    this._score = this._score + rowsToRemove.length;
+    for (let i = 0; i < allFigures.length - 1; i++) {
+      for (let j = 0; j < rowsToRemove.length; j++) {
+        let www = allFigures[i]._coordinates.filter((coor) => coor[0] !== rowsToRemove[j]);
+        www = www.map((coor) => {
+          if (coor[0] < rowsToRemove[j]) {
+            return [coor[0] + 1, coor[1]];
+          } else {
+            return [coor[0], coor[1]];
+          }
+        });
+        allFigures[i]._coordinates = www as FigureCoordinatesType;
+      }
     }
+    this._figures = allFigures;
   }
 
   private getRandomFigure(startCoordinates: CoordinatesType): Figure | undefined {
