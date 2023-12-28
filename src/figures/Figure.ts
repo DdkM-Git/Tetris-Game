@@ -1,6 +1,5 @@
 import CoordinatesType from "./CoordinatesType";
 import FigureCoordinatesType from "./FigureCoordinatesType";
-import FigureLowestCoordinatesType from "./FigureLowestCoordinatesType";
 import FigureMatrixType from "./FigureMatrixType";
 
 abstract class Figure extends Object {
@@ -103,7 +102,7 @@ abstract class Figure extends Object {
     return this;
   }
 
-  getLowestCoordinates(): FigureLowestCoordinatesType {
+  getLowestCoordinates(): FigureCoordinatesType {
     let lowestCoordinates = new Array<CoordinatesType>();
     let tmpCoordinates = Array.from(this._coordinates);
 
@@ -133,7 +132,7 @@ abstract class Figure extends Object {
 
     lowestCoordinates.push(tmpCoordinates[tmpCoordinates.length - 1]);
 
-    return lowestCoordinates as FigureLowestCoordinatesType;
+    return lowestCoordinates as FigureCoordinatesType;
   }
 
   abstract createClone(): Figure;
