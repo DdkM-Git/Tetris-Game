@@ -17,20 +17,27 @@ class Board {
 
   moveDownFigure(): Board {
     const allFigures = this._figures;
-    this.checkScoringAPoint();
     if (allFigures.length === 0) {
+      console.log("newFigure-start");
       const newFigure = this.getRandomFigure([0, 3]);
       !!newFigure && this.addFigure(newFigure);
     } else {
-      const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
-
-      if (this.checkVerticalMove(tmpFigure)) {
-        allFigures[allFigures.length - 1].moveDown();
+      const scoreRows = this.checkScoringAPoint();
+      if (scoreRows.length > 0) {
+        console.log("makeAPoint");
+        this.makeAPoint(scoreRows);
       } else {
-        const newFigure = this.getRandomFigure([0, 3]);
-        if (newFigure) {
-          this.addFigure(newFigure);
-        } else this.setGameOver();
+        console.log("makeAPoint-else");
+        const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
+        if (this.checkVerticalMove(tmpFigure)) {
+          allFigures[allFigures.length - 1].moveDown();
+        } else {
+          console.log("newFigure-else");
+          const newFigure = this.getRandomFigure([0, 3]);
+          if (newFigure) {
+            this.addFigure(newFigure);
+          } else this.setGameOver();
+        }
       }
     }
     return this;
@@ -119,18 +126,17 @@ class Board {
     }
   }
 
-  private checkScoringAPoint() {
+  private checkScoringAPoint(): number[] {
     const allFigures = Array.from(this._figures);
     let rowsToRemove: number[] = [];
 
     let allRows: any[] = [];
-    for (let i = 0; i < allFigures.length - 1; i++) {
+    for (let i = 0; i < allFigures.length; i++) {
       allFigures[i]._coordinates.forEach((coor) => {
         allRows = allRows.concat(coor[0]);
       });
     }
 
-    allRows.sort();
     for (let i = 0; i < this._rows; i++) {
       const aaa = allRows.filter((bbb) => bbb === i);
       if (aaa.length === this._columns) {
@@ -138,8 +144,14 @@ class Board {
       }
     }
 
+    return rowsToRemove;
+  }
+
+  private makeAPoint(rowsToRemove: number[]): Board {
+    const allFigures = Array.from(this._figures);
+
     this._score = this._score + rowsToRemove.length;
-    for (let i = 0; i < allFigures.length - 1; i++) {
+    for (let i = 0; i < allFigures.length; i++) {
       for (let j = 0; j < rowsToRemove.length; j++) {
         let www = allFigures[i]._coordinates.filter((coor) => coor[0] !== rowsToRemove[j]);
         www = www.map((coor) => {
@@ -153,6 +165,8 @@ class Board {
       }
     }
     this._figures = allFigures;
+
+    return this;
   }
 
   private getRandomFigure(startCoordinates: CoordinatesType): Figure | undefined {
