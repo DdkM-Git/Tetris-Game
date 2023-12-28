@@ -2,8 +2,10 @@ import CoordinatesType from "../figures/CoordinatesType";
 import Figure from "../figures/Figure";
 import FigureCoordinatesType from "../figures/FigureCoordinatesType";
 import LeftPipeFigure from "../figures/LeftPipeFigure";
+import LeftSnakeFigure from "../figures/LeftSnakeFigure";
 import RectangleFigure from "../figures/RectangleFigure";
 import RightPipeFigure from "../figures/RightPipeFigure";
+import RightSnakeFigure from "../figures/RightSnakeFigure";
 import SquareFigure from "../figures/SquareFigure";
 import getRandomInt from "../utils/getRandomInt";
 
@@ -173,7 +175,7 @@ class Board {
   }
 
   private getRandomFigure(startCoordinates: CoordinatesType): Figure | undefined {
-    switch (getRandomInt(4)) {
+    switch (getRandomInt(6)) {
       case 0:
         return new SquareFigure(startCoordinates);
       case 1:
@@ -182,6 +184,10 @@ class Board {
         return new LeftPipeFigure(startCoordinates);
       case 3:
         return new RightPipeFigure(startCoordinates);
+      case 4:
+        return new LeftSnakeFigure(startCoordinates);
+      case 5:
+        return new RightSnakeFigure(startCoordinates);
       default:
         return undefined;
     }
