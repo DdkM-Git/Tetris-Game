@@ -18,26 +18,29 @@ class Board {
   moveDownFigure(): Board {
     const allFigures = this._figures;
     if (allFigures.length === 0) {
-      console.log("newFigure-start");
       const newFigure = this.getRandomFigure([0, 3]);
       !!newFigure && this.addFigure(newFigure);
     } else {
-      const scoreRows = this.checkScoringAPoint();
-      if (scoreRows.length > 0) {
-        console.log("makeAPoint");
-        this.makeAPoint(scoreRows);
-      } else {
-        console.log("makeAPoint-else");
+      if (allFigures[allFigures.length - 1]._coordinates.length > 0) {
         const tmpFigure = allFigures[allFigures.length - 1].createClone().moveDown();
         if (this.checkVerticalMove(tmpFigure)) {
           allFigures[allFigures.length - 1].moveDown();
         } else {
-          console.log("newFigure-else");
-          const newFigure = this.getRandomFigure([0, 3]);
-          if (newFigure) {
-            this.addFigure(newFigure);
-          } else this.setGameOver();
+          const scoreRows = this.checkScoringAPoint();
+          if (scoreRows.length > 0) {
+            this.makeAPoint(scoreRows);
+          } else {
+            const newFigure = this.getRandomFigure([0, 3]);
+            if (newFigure) {
+              this.addFigure(newFigure);
+            } else this.setGameOver();
+          }
         }
+      } else {
+        const newFigure = this.getRandomFigure([0, 3]);
+        if (newFigure) {
+          this.addFigure(newFigure);
+        } else this.setGameOver();
       }
     }
     return this;
@@ -149,13 +152,13 @@ class Board {
 
   private makeAPoint(rowsToRemove: number[]): Board {
     const allFigures = Array.from(this._figures);
-
     this._score = this._score + rowsToRemove.length;
+
     for (let i = 0; i < allFigures.length; i++) {
       for (let j = 0; j < rowsToRemove.length; j++) {
         let www = allFigures[i]._coordinates.filter((coor) => coor[0] !== rowsToRemove[j]);
         www = www.map((coor) => {
-          if (coor[0] < rowsToRemove[j]) {
+          if (coor[0] <= rowsToRemove[j]) {
             return [coor[0] + 1, coor[1]];
           } else {
             return [coor[0], coor[1]];
